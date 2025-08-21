@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 public class Parser {
     private BufferedReader reader;
     private String line;
-    private String command;
+    public String command;
     private int commandNum;
 
     public Parser(String program) throws IOException {
@@ -52,9 +52,9 @@ public class Parser {
 
     private void formatLine() {
         line = line.replace(" ", "");
-            int comment = line.indexOf("//");
-            if (comment != -1) {
-                 line = line.substring(0, comment);
+            int commentIndex = line.indexOf("//");
+            if (commentIndex != -1) {
+                 line = line.substring(0, commentIndex);
             }
     }
 
@@ -71,15 +71,25 @@ public class Parser {
         return "C_COMMAND";
     }
 
-    // Use only on A or L commands
+    // Call only on A or L commands
     public String symbol() {
         // if A command
         if (command.charAt(0) == '@') {
-            return command.substring(1, command.length() - 1);
+            return command.substring(1, command.length());
         } else  { // if L command
-            return command.substring(1, command.length() - 2);
+            return command.substring(1, command.length() - 1);
         }
     }
 
-    
+    // Call only on C commands. The destination field is optional
+    public String dest() {
+        int equalsIndex = command.indexOf('=');
+        if (equalsIndex != -1 ) {
+            return command.substring(0, equalsIndex - 1);
+        } else {
+            return "";
+        }
+    }
+
+
 }
