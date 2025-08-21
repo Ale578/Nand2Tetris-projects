@@ -45,6 +45,7 @@ public class Parser {
                     } else if (commandType().equals("C_COMMAND") ) {
                         System.out.println(dest());
                         System.out.println(comp());
+                        System.out.println(jump());
                     }
 
                 commandNum++;
@@ -101,11 +102,12 @@ public class Parser {
     public String comp() {
         String commandField = command;
         int equalsIndex = command.indexOf('=');
-        int semicolonIndex = command.indexOf(';');
 
         if (equalsIndex != -1) {
             commandField = commandField.substring(equalsIndex + 1);
         }
+        
+        int semicolonIndex = commandField.indexOf(';');
 
         if (semicolonIndex != -1) {
             commandField = commandField.substring(0, semicolonIndex);
@@ -114,5 +116,13 @@ public class Parser {
         return commandField;
     }
 
+    // Call only on C commands. The jump field is optional in a C command
+    public String jump() {
+        int semicolonIndex = command.indexOf(';');
+        if (semicolonIndex != -1) {
+            return command.substring(semicolonIndex + 1);
+        }
+        return "";
+    }
 
 }
