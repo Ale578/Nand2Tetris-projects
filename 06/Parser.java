@@ -39,7 +39,13 @@ public class Parser {
             if (!line.equals("")) {
                 command = line;
                 System.out.println(commandNum + "| " + command);
-                commandType();
+
+                    if (commandType().equals("A_COMMAND") || commandType().equals("L_COMMAND")) {
+                        System.out.println(symbol());
+                    } else if (commandType().equals("C_COMMAND") ) {
+                        System.out.println(dest());
+                        System.out.println(comp());
+                    }
 
                 commandNum++;
             }
@@ -81,14 +87,31 @@ public class Parser {
         }
     }
 
-    // Call only on C commands. The destination field is optional
+    // Call only on C commands. The destination field is optional in a C command
     public String dest() {
         int equalsIndex = command.indexOf('=');
         if (equalsIndex != -1 ) {
-            return command.substring(0, equalsIndex - 1);
+            return command.substring(0, equalsIndex);
         } else {
             return "";
         }
+    }
+
+    // Call only on C commands.
+    public String comp() {
+        String commandField = command;
+        int equalsIndex = command.indexOf('=');
+        int semicolonIndex = command.indexOf(';');
+
+        if (equalsIndex != -1) {
+            commandField = commandField.substring(equalsIndex + 1);
+        }
+
+        if (semicolonIndex != -1) {
+            commandField = commandField.substring(0, semicolonIndex);
+        }
+
+        return commandField;
     }
 
 
