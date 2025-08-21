@@ -2,6 +2,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * Encapsulates access to the input code. Reads an assembly language command,
@@ -69,4 +70,16 @@ public class Parser {
         }
         return "C_COMMAND";
     }
+
+    // Use only on A or L commands
+    public String symbol() {
+        // if A command
+        if (command.charAt(0) == '@') {
+            return command.substring(1, command.length() - 1);
+        } else  { // if L command
+            return command.substring(1, command.length() - 2);
+        }
+    }
+
+    
 }
