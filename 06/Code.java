@@ -6,6 +6,7 @@ import java.util.Set;
 public class Code {
     public static final int MAX_A_COMMAND_NUM = 32768;
     
+    // Call only on C commands.
     public static String dest(String mnemonic) {
         char[] binaryCode = {'0', '0', '0'};
 
@@ -31,6 +32,7 @@ public class Code {
         return new String(binaryCode);
     }
 
+    // Call only on C commands.
     public static String comp(String mnemonic) {
         String binaryCode = "";
 
@@ -109,6 +111,7 @@ public class Code {
         }
     }
 
+    // Call only on C commands.
     public static String jump(String mnemonic) {
         switch (mnemonic) {
             case "":
@@ -131,7 +134,7 @@ public class Code {
                 throw new IllegalArgumentException("Invalid jump mnemonic: " + mnemonic);
         }
     }
-    
+    // Call only on A commands.
     public static String number(String numStr) {
         int num = Integer.parseInt(numStr);
 
