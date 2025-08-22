@@ -1,10 +1,11 @@
 import java.util.Set;
 
 /**
- * Translates Hack assembly language mnemonics into binary codes.
+ * Translates Hack assembly language commands into binary code.
  */
 public class Code {
-
+    public static final int MAX_A_COMMAND_NUM = 32768;
+    
     public static String dest(String mnemonic) {
         char[] binaryCode = {'0', '0', '0'};
 
@@ -128,6 +129,16 @@ public class Code {
                 return "111";
             default:
                 throw new IllegalArgumentException("Invalid jump mnemonic: " + mnemonic);
+        }
+    }
+    
+    public static String number(String numStr) {
+        int num = Integer.parseInt(numStr);
+
+        if (num < MAX_A_COMMAND_NUM) {
+            return String.format("%16s",  Integer.toBinaryString(num)).replace(" ", "0");
+        } else {
+            throw new IllegalArgumentException("Invalid number, it is too large: " + numStr);
         }
     }
 }
