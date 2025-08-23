@@ -22,7 +22,7 @@ public class Parser {
         command = "";
     }
     
-    public boolean hasMoreCommands() throws IOException {
+    public boolean hasMoreLines() throws IOException {
         return nextLine != null;
     }
 

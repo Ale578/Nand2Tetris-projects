@@ -17,7 +17,7 @@ public class Main {
 
         try {
             Parser parser = new Parser(program);
-            while (parser.hasMoreCommands()) {
+            while (parser.hasMoreLines()) {
                 parser.advance();
 
                 if (parser.commandType().equals("C_COMMAND")) {
