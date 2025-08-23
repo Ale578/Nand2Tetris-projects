@@ -2,7 +2,6 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 /**
  * Encapsulates access to the input code. Reads an assembly language command,
@@ -12,6 +11,7 @@ import java.util.regex.Matcher;
 public class Parser {
     private BufferedReader reader;
     private String line;
+    private String nextLine;
     public String command;
     private int commandNum;
 
@@ -19,42 +19,36 @@ public class Parser {
         Charset charset = Charset.forName("US-ASCII");
         Path path = Paths.get(program);
         reader = Files.newBufferedReader(path, charset);
-        line = reader.readLine();
+        nextLine = reader.readLine();
+        command = "";
         commandNum = 0;
     }
     
     public boolean hasMoreCommands() throws IOException {
-        if (line == null) {
+        if (nextLine == null) {
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
 
-    public void advance() throws IOException {
-        if (hasMoreCommands()) {
+    // Call only if hasMoreCommands is true
+    public void advance() throws IOException {    
+            line = nextLine;
+            nextLine = reader.readLine();
 
             formatLine();
 
             // Ignore non-commands
             if (!line.equals("")) {
                 command = line;
-                System.out.println(commandNum + "| " + command);
-
-                    if (commandType().equals("A_COMMAND") || commandType().equals("L_COMMAND")) {
-                        System.out.println(symbol());
-                    } else if (commandType().equals("C_COMMAND") ) {
-                        System.out.println(dest());
-                        System.out.println(comp());
-                        System.out.println(jump());
-                    }
-
+                
+                //System.out.println(commandNum + "| " + command);
                 commandNum++;
             }
 
-            line = reader.readLine();
-        } else {
-            reader.close();
-        }
+            // CLOOOOOSE
+            //reader.close();
     }
 
     private void formatLine() {
@@ -72,10 +66,14 @@ public class Parser {
         }
 
         Pattern patternL = Pattern.compile("^\\([a-zA-Z]+\\)$");
-         if (patternL.matcher(command).find()) {
+        if (patternL.matcher(command).find()) {
             return "L_COMMAND";
         }
-        return "C_COMMAND";
+        Pattern patternC = Pattern.compile("^(?:(?<dest>[ADM]{1,3})=)?(?<comp>0|1|-1|D|A|!D|!A|-D|-A|D\\+1|A\\+1|D-1|A-1|D\\+A|D-A|A-D|D&A|D\\|A|M|!M|-M|M\\+1|M-1|D\\+M|D-M|M-D|D&M|D\\|M)(?:;(?<jump>JGT|JEQ|JGE|JLT|JNE|JLE|JMP))?$");
+        if (patternC.matcher(command).find()) {
+            return "C_COMMAND";
+        }
+        return "Not a command";
     }
 
     // Call only on A or L commands
