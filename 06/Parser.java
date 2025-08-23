@@ -12,7 +12,7 @@ public class Parser {
     private BufferedReader reader;
     private String line;
     private String nextLine;
-    public String command;
+    public String command; // SET TO PRIVATEEEEE
     private int commandNum;
 
     public Parser(String program) throws IOException {
@@ -25,11 +25,7 @@ public class Parser {
     }
     
     public boolean hasMoreCommands() throws IOException {
-        if (nextLine == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return nextLine != null;
     }
 
     // Call only if hasMoreCommands is true
@@ -45,6 +41,8 @@ public class Parser {
                 
                 //System.out.println(commandNum + "| " + command);
                 commandNum++;
+            } else {
+                command = "NO_COMMAND";
             }
 
             // CLOOOOOSE
@@ -73,7 +71,7 @@ public class Parser {
         if (patternC.matcher(command).find()) {
             return "C_COMMAND";
         }
-        return "Not a command";
+        return "NO_COMMAND";
     }
 
     // Call only on A or L commands
