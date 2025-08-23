@@ -68,7 +68,7 @@ public class Code {
                 binaryCode = "110011";
                 break;
             case "D+1":
-                binaryCode = "001111";
+                binaryCode = "011111";
                 break;
             case "A+1":
             case "M+1":
