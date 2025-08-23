@@ -44,7 +44,7 @@ public class Code {
                 binaryCode = "111111";
                 break;
             case "-1":
-                binaryCode = "101010";
+                binaryCode = "111010";
                 break;
             case "D":
                 binaryCode = "001100";
@@ -71,6 +71,7 @@ public class Code {
                 binaryCode = "001111";
                 break;
             case "A+1":
+            case "M+1":
                 binaryCode = "110111";
                 break;
             case "D-1":
@@ -134,6 +135,7 @@ public class Code {
                 throw new IllegalArgumentException("Invalid jump mnemonic: " + mnemonic);
         }
     }
+
     // Call only on A commands.
     public static String number(String numStr) {
         int num = Integer.parseInt(numStr);
