@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * Drives translation process from an assembly language program to a machine code program.
  */
 public class Main {
     public static void main(String[] args) {
-        String program = "Add.asm";
+        String program = "RectL.asm";
         String binaryCommand;
         Path path = Paths.get(program.substring(0, program.indexOf(".")) + ".hack");
         List<String> binaryCommands = new ArrayList<>();
@@ -23,23 +23,17 @@ public class Main {
                 if (parser.commandType().equals("C_COMMAND")) {
                     binaryCommand = "111" + Code.comp(parser.comp()) + Code.dest(parser.dest()) + Code.jump(parser.jump());
                     binaryCommands.add(binaryCommand); 
-                    System.out.println(parser.command + " -> " + binaryCommand);
 
                 }  else if (parser.commandType().equals("A_COMMAND")) {
                     binaryCommand = Code.number(parser.symbol());
                     binaryCommands.add(binaryCommand); 
-                    System.out.println(parser.command + " -> " + binaryCommand);
                 }
-                // else if (parser.commandType().equals("L_COMMAND")) {
-                //     
-                //     System.out.println("L_COMMAND");
-                // }
             }
+            parser.close();
 
             Files.write(path, binaryCommands);
         } catch (IOException e) {
             System.err.println("Unable to open" + program);
         }
     }
-    
 }

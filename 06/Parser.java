@@ -12,8 +12,7 @@ public class Parser {
     private BufferedReader reader;
     private String line;
     private String nextLine;
-    public String command; // SET TO PRIVATEEEEE
-    private int commandNum;
+    private String command;
 
     public Parser(String program) throws IOException {
         Charset charset = Charset.forName("US-ASCII");
@@ -21,7 +20,6 @@ public class Parser {
         reader = Files.newBufferedReader(path, charset);
         nextLine = reader.readLine();
         command = "";
-        commandNum = 0;
     }
     
     public boolean hasMoreCommands() throws IOException {
@@ -39,14 +37,9 @@ public class Parser {
             if (!line.equals("")) {
                 command = line;
                 
-                //System.out.println(commandNum + "| " + command);
-                commandNum++;
             } else {
                 command = "NO_COMMAND";
             }
-
-            // CLOOOOOSE
-            //reader.close();
     }
 
     private void formatLine() {
@@ -119,6 +112,10 @@ public class Parser {
             return command.substring(semicolonIndex + 1);
         }
         return "";
+    }
+
+    public void close() throws IOException {
+        reader.close();
     }
 
 }
