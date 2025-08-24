@@ -51,12 +51,12 @@ public class Parser {
     }
 
     public String commandType() {
-        Pattern patternA = Pattern.compile("^@[a-zA-Z0-9]+$");
+        Pattern patternA = Pattern.compile("^@[a-zA-Z0-9_.\\$]+$");
         if (patternA.matcher(command).find()) {
             return "A_COMMAND";
         }
 
-        Pattern patternL = Pattern.compile("^\\([a-zA-Z]+\\)$");
+        Pattern patternL = Pattern.compile("^\\([a-zA-Z0-9_.\\$]+\\)$");
         if (patternL.matcher(command).find()) {
             return "L_COMMAND";
         }

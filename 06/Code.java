@@ -137,13 +137,12 @@ public class Code {
     }
 
     // Call only on A commands.
-    public static String number(String numStr) {
-        int num = Integer.parseInt(numStr);
+    public static String number(int num) {
 
-        if (num < MAX_A_COMMAND_NUM) {
+        if (num >= 0 && num < MAX_A_COMMAND_NUM) {
             return String.format("%16s",  Integer.toBinaryString(num)).replace(" ", "0");
         } else {
-            throw new IllegalArgumentException("Invalid number, it is too large: " + numStr);
+            throw new IllegalArgumentException("Invalid number, it is too large: " + num);
         }
     }
 }
