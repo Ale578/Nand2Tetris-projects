@@ -74,4 +74,8 @@ public class Parser {
         }
         return false;
     }
+
+    public void advance() throws IOException {  
+        currentCommand = nextCommand;
+    }
 }
