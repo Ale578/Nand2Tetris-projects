@@ -42,6 +42,10 @@ public class Parser {
             case "or":
             case "not":
                 return "C_ARITHMETIC";
+            case "push":
+                return "C_PUSH";
+            case "pop":
+                return "C_POP";
             default:
                 return "Invalid command";
         }
