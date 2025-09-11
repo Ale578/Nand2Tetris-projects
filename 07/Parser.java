@@ -61,4 +61,17 @@ public class Parser {
         }
         return aLine;
     }
+
+    public boolean hasMoreCommands() throws IOException {
+        nextLine = formatLine(nextLine);
+        while (nextLine != null) {
+            if (isValidCommand()) {
+                nextCommand = nextLine;
+                nextLine = reader.readLine();
+                return true;
+            }
+            nextLine = reader.readLine();
+        }
+        return false;
+    }
 }
