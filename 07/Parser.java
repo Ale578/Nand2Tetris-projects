@@ -46,4 +46,8 @@ public class Parser {
                 return "Invalid command";
         }
     }
+
+    public boolean isValidCommand() {
+        return !commandType().equals("Invalid command");
+    }
 }
