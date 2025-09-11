@@ -50,4 +50,15 @@ public class Parser {
     public boolean isValidCommand() {
         return !commandType().equals("Invalid command");
     }
+
+    public String formatLine(String aLine) {
+        if (aLine != null) {
+             aLine = aLine.trim();
+             int commentIndex = aLine.indexOf("//");
+            if (commentIndex != -1) {
+                aLine = aLine.substring(0, commentIndex);
+            }
+        }
+        return aLine;
+    }
 }
