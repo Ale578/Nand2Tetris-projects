@@ -24,5 +24,26 @@ public class Parser {
         nextLine = reader.readLine();
     }
 
-   
+    public String commandType() {
+        int firstSpaceIndex = nextLine.indexOf(" ");
+        String command = nextLine;
+        if (firstSpaceIndex != -1) {
+                command = nextLine.substring(0, firstSpaceIndex);
+        }
+
+        switch (command) {
+            case "add":
+            case "sub":
+            case "neg":
+            case "eq":
+            case "get":
+            case "lt":
+            case "and":
+            case "or":
+            case "not":
+                return "C_ARITHMETIC";
+            default:
+                return "Invalid command";
+        }
+    }
 }
