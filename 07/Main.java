@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,17 +8,40 @@ public class Main {
             System.err.println("Usage: java Main <program>");
             return;
         }
-        String program = args[0];
-        Parser parser;
-        int i = 0;
-        try {
-            parser = new Parser(program);
-            while (parser.hasMoreCommands()) {
-                parser.advance();
-                parser.arg1();
+
+        File f = new File(args[0]);
+        ArrayList<String> files = new ArrayList<>();
+
+        if (f.isFile()) {
+            files.add(f.getPath());
+            
+        } else if (f.isDirectory()) {
+            for (File file : f.listFiles()) {
+                files.add(file.getPath());
             }
-        } catch (IOException e) {
-            System.err.println("Unable to open " + program);
         }
+
+        CodeWriter codeWriter = new CodeWriter("output.asm");
+
+        Parser parser;
+        for (String file : files) {
+            try {
+                parser = new Parser(file);
+                while (parser.hasMoreCommands()) {
+                    parser.advance();
+
+                    codeWriter.writeArithmetic("H\n");
+                }
+            } catch (IOException e) {
+                System.err.println("Unable to open " + file);
+            }
+        }
+        try {
+            codeWriter.close();
+        } catch (IOException e) {
+                System.err.println("Unable to close");
+        }
+        
+
     }
 }
