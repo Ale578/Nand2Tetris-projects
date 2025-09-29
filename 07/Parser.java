@@ -24,11 +24,11 @@ public class Parser {
         nextLine = reader.readLine();
     }
 
-    public String commandType() {
-        int firstSpaceIndex = nextLine.indexOf(" ");
-        String command = nextLine;
+    public String commandType(String command) {
+        int firstSpaceIndex = command.indexOf(" ");
+        // String command = nextLine;
         if (firstSpaceIndex != -1) {
-                command = nextLine.substring(0, firstSpaceIndex);
+                command = command.substring(0, firstSpaceIndex);
         }
 
         switch (command) {
@@ -36,7 +36,7 @@ public class Parser {
             case "sub":
             case "neg":
             case "eq":
-            case "get":
+            case "gt":
             case "lt":
             case "and":
             case "or":
@@ -51,8 +51,8 @@ public class Parser {
         }
     }
 
-    public boolean isValidCommand() {
-        return !commandType().equals("Invalid command");
+    public boolean isValidCommand(String line) {
+        return !commandType(line).equals("Invalid command");
     }
 
     public String formatLine(String aLine) {
@@ -69,7 +69,7 @@ public class Parser {
     public boolean hasMoreCommands() throws IOException {
         nextLine = formatLine(nextLine);
         while (nextLine != null) {
-            if (isValidCommand()) {
+            if (isValidCommand(nextLine)) {
                 nextCommand = nextLine;
                 nextLine = reader.readLine();
                 return true;
@@ -81,5 +81,19 @@ public class Parser {
 
     public void advance() throws IOException {  
         currentCommand = nextCommand;
+    }
+
+    // Should not be called if the current command is C_RETURN
+    public String arg1() {
+        if (commandType(currentCommand).equals("C_ARITHMETIC")) {
+            return currentCommand;
+            
+        } else if (commandType(currentCommand).equals("C_PUSH") || commandType(currentCommand).equals("C_PULL")) {
+            int firstSpaceIndex = currentCommand.indexOf(" ");
+            String firstArg = currentCommand.substring(firstSpaceIndex + 1);
+            int secondSpaceIndex = firstArg.indexOf(" ");
+            return firstArg.substring(0, secondSpaceIndex);
+        }
+        return "IDK";
     }
 }

@@ -6,18 +6,18 @@ public class Main {
             System.err.println("Usage: java Main <program>");
             return;
         }
-
         String program = args[0];
         Parser parser;
+        int i = 0;
         try {
             parser = new Parser(program);
             while (parser.hasMoreCommands()) {
                 parser.advance();
-                System.out.println(parser.currentCommand);
+                System.out.println(i + " " + parser.arg1());
+                i++;
             }
         } catch (IOException e) {
             System.err.println("Unable to open " + program);
         }
     }
-
 }
