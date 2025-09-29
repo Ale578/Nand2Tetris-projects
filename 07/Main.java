@@ -13,8 +13,7 @@ public class Main {
             parser = new Parser(program);
             while (parser.hasMoreCommands()) {
                 parser.advance();
-                System.out.println(i + " " + parser.arg1());
-                i++;
+                parser.arg1();
             }
         } catch (IOException e) {
             System.err.println("Unable to open " + program);

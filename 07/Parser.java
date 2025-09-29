@@ -92,8 +92,18 @@ public class Parser {
             int firstSpaceIndex = currentCommand.indexOf(" ");
             String firstArg = currentCommand.substring(firstSpaceIndex + 1);
             int secondSpaceIndex = firstArg.indexOf(" ");
+            arg2();
             return firstArg.substring(0, secondSpaceIndex);
         }
         return "IDK";
+    }
+
+    // Should only be called if the current command is C_PUSH, C_POP, C_FUNCTION or C_CALL
+    public int arg2() {
+        int firstSpaceIndex = currentCommand.indexOf(" ");
+        String secondArg = currentCommand.substring(firstSpaceIndex + 1);
+        int secondSpaceIndex = secondArg.indexOf(" ");
+        System.out.println(secondArg.substring(secondSpaceIndex + 1));
+        return Integer.parseInt(secondArg.substring(secondSpaceIndex + 1));
     }
 }
