@@ -14,7 +14,7 @@ public class Main {
 
         if (f.isFile()) {
             files.add(f.getPath());
-            
+
         } else if (f.isDirectory()) {
             for (File file : f.listFiles()) {
                 files.add(file.getPath());
@@ -29,8 +29,14 @@ public class Main {
                 parser = new Parser(file);
                 while (parser.hasMoreCommands()) {
                     parser.advance();
+                    String commandType = parser.commandType(parser.getCurrentCommand());
 
-                    codeWriter.writeArithmetic("H\n");
+                    if (commandType.equals("C_ARITHMETIC")) {
+                        codeWriter.writeArithmetic(parser.arg1());
+
+                    } else if (commandType.equals("C_PUSH") || commandType.equals("C_POP")) {
+                        codeWriter.writePushPop(commandType, parser.arg1(), parser.arg2());
+                    }
                 }
             } catch (IOException e) {
                 System.err.println("Unable to open " + file);
@@ -41,7 +47,5 @@ public class Main {
         } catch (IOException e) {
                 System.err.println("Unable to close");
         }
-        
-
     }
 }

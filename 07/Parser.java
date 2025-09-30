@@ -10,18 +10,21 @@ import java.nio.file.Paths;
  * It reads VM commands, parses them, and provides convenient access to their components. 
  * In addition, it removes all white space and comments.
  */
-
 public class Parser {
     private BufferedReader reader;
     private String nextLine;
     private String nextCommand;
     public String currentCommand;
 
-    public Parser(String file) throws IOException{
+    public Parser(String file) throws IOException {
         Charset charset = Charset.forName("US-ASCII");
         Path path = Paths.get(file);
         reader = Files.newBufferedReader(path, charset);
         nextLine = reader.readLine();
+    }
+
+    public String getCurrentCommand() {
+        return currentCommand;
     }
 
     public String commandType(String command) {
@@ -88,11 +91,10 @@ public class Parser {
         if (commandType(currentCommand).equals("C_ARITHMETIC")) {
             return currentCommand;
             
-        } else if (commandType(currentCommand).equals("C_PUSH") || commandType(currentCommand).equals("C_PULL")) {
+        } else if (commandType(currentCommand).equals("C_PUSH") || commandType(currentCommand).equals("C_POP")) {
             int firstSpaceIndex = currentCommand.indexOf(" ");
             String firstArg = currentCommand.substring(firstSpaceIndex + 1);
             int secondSpaceIndex = firstArg.indexOf(" ");
-            arg2();
             return firstArg.substring(0, secondSpaceIndex);
         }
         return "IDK";
@@ -103,7 +105,6 @@ public class Parser {
         int firstSpaceIndex = currentCommand.indexOf(" ");
         String secondArg = currentCommand.substring(firstSpaceIndex + 1);
         int secondSpaceIndex = secondArg.indexOf(" ");
-        System.out.println(secondArg.substring(secondSpaceIndex + 1));
         return Integer.parseInt(secondArg.substring(secondSpaceIndex + 1));
     }
 }
