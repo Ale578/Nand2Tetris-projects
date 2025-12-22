@@ -14,7 +14,7 @@ public class Parser {
     private BufferedReader reader;
     private String nextLine;
     private String nextCommand;
-    public String currentCommand;
+    private String currentCommand;
 
     public Parser(String file) throws IOException {
         Charset charset = Charset.forName("US-ASCII");
@@ -60,11 +60,11 @@ public class Parser {
 
     public String formatLine(String aLine) {
         if (aLine != null) {
-             aLine = aLine.trim();
-             int commentIndex = aLine.indexOf("//");
+            int commentIndex = aLine.indexOf("//");
             if (commentIndex != -1) {
                 aLine = aLine.substring(0, commentIndex);
             }
+            aLine = aLine.trim();
         }
         return aLine;
     }
