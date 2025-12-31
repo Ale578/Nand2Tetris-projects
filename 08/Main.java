@@ -1,0 +1,57 @@
+import java.io.IOException;
+import java.util.ArrayList;
+import java.io.File;
+
+public class Main {
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            System.err.println("Usage: java Main <program>");
+            return;
+        }
+
+        File f = new File(args[0]);
+        ArrayList<String> files = new ArrayList<>();
+
+        if (f.isFile()) {
+            files.add(f.getPath());
+
+        } else if (f.isDirectory()) {
+            for (File file : f.listFiles()) {
+                files.add(file.getPath());
+            }
+        }
+
+        CodeWriter codeWriter = new CodeWriter("output.asm");
+
+        Parser parser;
+        for (String file : files) {
+            try {
+                parser = new Parser(file);
+                while (parser.hasMoreCommands()) {
+                    parser.advance();
+                    String commandType = parser.commandType(parser.getCurrentCommand());
+
+                    if (commandType.equals("C_ARITHMETIC")) {
+                        codeWriter.writeArithmetic(parser.arg1());
+
+                    } else if (commandType.equals("C_PUSH") || commandType.equals("C_POP")) {
+                        codeWriter.writePushPop(commandType, parser.arg1(), parser.arg2());
+                    } else if (commandType.equals("C_LABEL")) {
+                        codeWriter.writeLabel(parser.arg1());
+                    } else if (commandType.equals("C_IF")) {
+                        codeWriter.writeIf(parser.arg1());
+                    } else if (commandType.equals("C_GOTO")) {
+                        codeWriter.writeGoto(parser.arg1());
+                    }
+                }
+            } catch (IOException e) {
+                System.err.println("Unable to open " + file);
+            }
+        }
+        try {
+            codeWriter.close();
+        } catch (IOException e) {
+                System.err.println("Unable to close");
+        }
+    }
+}
